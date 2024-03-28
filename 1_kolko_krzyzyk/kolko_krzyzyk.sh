@@ -169,7 +169,7 @@ gameLoop() {
         if isProperPositionTaken; then
             makeMove "$input"
 
-            while [ isNonComputerTurn && isPlayerChoosingWrongPosition ]; do
+            while isNonComputerTurn && isPlayerChoosingWrongPosition; do
                 read position
                 makeMove "$input"
             done
