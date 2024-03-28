@@ -22,7 +22,7 @@ switchPlayer() {
 }
 
 isProperPositionTaken() {
-    if [ "$position" -ge 1 ] && [ "$position" -le 9 ]; then
+    if [ "$input" -ge 1 ] && [ "$input" -le 9 ]; then
         return 0
     fi
     
@@ -76,18 +76,61 @@ makeMove() {
     fi
 }
 
+displayMenu() {
+    clear
+    echo "=== MENU ==="
+    echo "1. New game"
+    echo "2. Continue game"
+}
+
+loadGame() {
+    if [ -f "saved_game.txt" ]; then
+        source "saved_game.txt"
+    else
+        echo "No saved game."
+    fi
+}
+
+saveGame() {
+    echo "board=(${board[@]})" > "saved_game.txt"
+    echo "currentPlayer=\"$currentPlayer\"" >> "saved_game.txt"
+    echo "playerChooseTakenPosition=$playerChooseTakenPosition" >> "saved_game.txt"
+    echo "Game saved."
+}
+
+displayMenu
+read -p "Choose an option: " choice
+
+case $choice in
+    1)
+        echo
+        ;;
+    2)  
+        loadGame
+        ;;
+    *)
+        echo "Invalid choice"
+        exit 1
+        ;;
+esac
+
 while true; do
     displayBoard
 
-    echo -e "\n$currentPlayer player turn, choose position 1-9: "
-    read position
+    echo -e "\n$currentPlayer player turn, choose position 1-9 or or write \"s\" to save game"
+    read input
+
+    if [ "$input" == "s" ]; then
+        saveGame
+        exit 0
+    fi
 
     if isProperPositionTaken; then
-        makeMove "$position"
+        makeMove "$input"
 
         while isPlayerChoosingWrongPosition; do
             read position
-            makeMove "$position"
+            makeMove "$input"
         done
 
         if isWinConditionFullfiled; then
