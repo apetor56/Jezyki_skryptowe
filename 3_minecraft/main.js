@@ -1,57 +1,125 @@
-let sizeX = 0
-let sizeY = 0
-let sizeZ = 0
-function makeFloor (sizeX: number, sizeZ: number) {
-    builder.teleportTo(posCamera(0, -1, 5))
-    builder.mark()
-    builder.shift(sizeZ, -1, sizeX)
-    builder.fill(PLANKS_BIRCH)
-    builder.teleportTo(posCamera(0, -1, 5))
-    builder.shift(5, 0, 5)
-    builder.mark()
-    builder.shift(sizeZ - 10, 0, sizeX - 10)
-    builder.fill(POLISHED_ANDESITE)
+let posX = 0
+let outerFloorSizeX = 0
+let outerWallOffset = 0
+let posY = 0
+let offsetZ = 0
+let wallHeight = 0
+let outerFloorSizeZ = 0
+let posZ = 0
+function makeWallGround (offsetXZ: number, hightOffset: number) {
+    blocks.fill(
+    DIORITE,
+    world(posX - outerFloorSizeX - outerWallOffset + offsetXZ, posY - 1, offsetZ - outerWallOffset + offsetXZ),
+    world(posX + outerFloorSizeX + outerWallOffset - offsetXZ, posY - 1 + wallHeight - hightOffset, offsetZ + outerWallOffset + outerFloorSizeZ - offsetXZ),
+    FillOperation.Hollow
+    )
+    blocks.fill(
+    AIR,
+    world(posX - outerFloorSizeX - outerWallOffset + offsetXZ, posY + wallHeight - 1 - hightOffset, offsetZ - outerWallOffset + offsetXZ),
+    world(posX + outerFloorSizeX + outerWallOffset - offsetXZ, posY + wallHeight - 1 - hightOffset, offsetZ + outerWallOffset + outerFloorSizeZ - offsetXZ),
+    FillOperation.Replace
+    )
 }
-function makeWalls3 (sizeX: number, sizeY: number, sizeZ: number) {
-    builder.teleportTo(posCamera(0, -1, 5))
-    builder.shift(-2, 1, -2)
-    builder.mark()
-    builder.shift(sizeZ + 4, sizeY + 1, sizeX + 4)
-    builder.fill(POLISHED_ANDESITE)
-    builder.teleportTo(posCamera(0, 0, 5))
-    builder.mark()
-    builder.shift(sizeZ - 0, sizeY + 1, sizeX - 0)
-    builder.fill(AIR)
+function clearWorld () {
+    for (let indeks = 0; indeks <= 50; indeks++) {
+        blocks.fill(
+        AIR,
+        world(50, posY + indeks, 1),
+        world(-50, posY + indeks, 50),
+        FillOperation.Replace
+        )
+    }
+    blocks.fill(
+    GRASS,
+    world(posX - 40, posY - 1, posZ + 1),
+    world(posX + 40, posY - 1, posZ + 50),
+    FillOperation.Replace
+    )
+}
+function makeOuterFloor () {
+    blocks.fill(
+    OBSIDIAN,
+    world(posX - outerFloorSizeX, posY - 1, offsetZ),
+    world(posX + outerFloorSizeX, posY - 1, offsetZ + outerFloorSizeZ),
+    FillOperation.Replace
+    )
 }
 player.onChat("run", function () {
-    sizeX += 18
-    sizeY += 7
-    sizeZ += 28
-    makeWalls3(sizeX, sizeY, sizeZ)
-    makeFloor(sizeX, sizeZ)
-    makeWalls(sizeX, sizeY, sizeZ)
-    makeWalls2(sizeX, sizeY, sizeZ)
+    posX = 0
+    posY = -60
+    posZ = 0
+    offsetZ = 10
+    outerFloorSizeX = 15
+    outerFloorSizeZ = 22
+    wallHeight = 10
+    outerWallOffset = 4
+    player.say(player.position())
+    player.teleport(world(posX, posY, posZ))
+    clearWorld()
+    makeOuterWalls()
+    makeWallGround(1, 2)
+    makeWallGround(2, 2)
+    makeInnerWalls(3, 1)
+    makeHut(6)
+    makeOuterFloor()
+    makeInnerFloor(2)
+    makeWallHoles()
 })
-function makeWalls2 (sizeX: number, sizeY: number, sizeZ: number) {
-    builder.teleportTo(posCamera(0, -1, 5))
-    builder.shift(0, 1, 0)
-    builder.mark()
-    builder.shift(sizeZ + 0, sizeY - 1, sizeX + 0)
-    builder.fill(STONE)
-    builder.teleportTo(posCamera(0, 0, 5))
-    builder.shift(2, 0, 2)
-    builder.mark()
-    builder.shift(sizeZ - 4, sizeY, sizeX - 4)
-    builder.fill(AIR)
+function makeOuterWalls () {
+    blocks.fill(
+    STONE_BRICK_MONSTER_EGG,
+    world(posX - outerFloorSizeX - outerWallOffset, posY - 1, offsetZ - outerWallOffset),
+    world(posX + outerFloorSizeX + outerWallOffset, posY - 1 + wallHeight, offsetZ + outerWallOffset + outerFloorSizeZ),
+    FillOperation.Hollow
+    )
+    blocks.fill(
+    AIR,
+    world(posX - outerFloorSizeX - outerWallOffset, posY + wallHeight - 1, offsetZ - outerWallOffset),
+    world(posX + outerFloorSizeX + outerWallOffset, posY + wallHeight - 1, offsetZ + outerWallOffset + outerFloorSizeZ),
+    FillOperation.Replace
+    )
 }
-function makeWalls (sizeX: number, sizeY: number, sizeZ: number) {
-    builder.teleportTo(posCamera(0, -1, 5))
-    builder.shift(-2, 1, -2)
-    builder.mark()
-    builder.shift(sizeZ + 4, sizeY, sizeX + 4)
-    builder.fill(STONE_BRICK_MONSTER_EGG)
-    builder.teleportTo(posCamera(0, 0, 5))
-    builder.mark()
-    builder.shift(sizeZ - 0, sizeY, sizeX - 0)
-    builder.fill(AIR)
+function makeInnerWalls (offsetXZ: number, hightOffset: number) {
+    blocks.fill(
+    STONE,
+    world(posX - outerFloorSizeX - outerWallOffset + offsetXZ, posY - 1, offsetZ - outerWallOffset + offsetXZ),
+    world(posX + outerFloorSizeX + outerWallOffset - offsetXZ, posY - 1 + wallHeight - hightOffset, offsetZ + outerWallOffset + outerFloorSizeZ - offsetXZ),
+    FillOperation.Hollow
+    )
+    blocks.fill(
+    AIR,
+    world(posX - outerFloorSizeX - outerWallOffset + offsetXZ, posY + wallHeight - 1 - hightOffset, offsetZ - outerWallOffset + offsetXZ),
+    world(posX + outerFloorSizeX + outerWallOffset - offsetXZ, posY + wallHeight - 1 - hightOffset, offsetZ + outerWallOffset + outerFloorSizeZ - offsetXZ),
+    FillOperation.Replace
+    )
+}
+function makeHut (offsetXZ: number) {
+    blocks.fill(
+    BEDROCK,
+    world(posX - outerFloorSizeX + offsetXZ, posY - 1, offsetZ + offsetXZ),
+    world(posX + outerFloorSizeX - offsetXZ, posY + 5, offsetZ + outerFloorSizeZ - offsetXZ),
+    FillOperation.Hollow
+    )
+}
+function makeInnerFloor (offsetXZ: number) {
+    blocks.fill(
+    COBBLESTONE,
+    world(posX - outerFloorSizeX + offsetXZ, posY - 1, offsetZ + offsetXZ),
+    world(posX + outerFloorSizeX - offsetXZ, posY - 1, offsetZ + outerFloorSizeZ - offsetXZ),
+    FillOperation.Replace
+    )
+}
+function makeWallHoles () {
+    for (let indeks2 = 0; indeks2 <= outerFloorSizeZ + 2 * outerWallOffset; indeks2++) {
+        if (indeks2 % 2 != 0) {
+            blocks.place(AIR, world(outerFloorSizeX + outerWallOffset + posX, posY + wallHeight - 2, posZ + offsetZ - outerWallOffset + indeks2))
+            blocks.place(AIR, world(posX - outerFloorSizeX - outerWallOffset, posY + wallHeight - 2, posZ + offsetZ - outerWallOffset + indeks2))
+        }
+    }
+    for (let indeks22 = 0; indeks22 <= outerFloorSizeX * 2 + 2 * outerWallOffset; indeks22++) {
+        if (indeks22 % 2 != 0) {
+            blocks.place(AIR, world(posX + outerFloorSizeX + outerWallOffset - indeks22, posY + wallHeight - 2, posZ + offsetZ - outerWallOffset))
+            blocks.place(AIR, world(posX + outerFloorSizeX + outerWallOffset - indeks22, posY + wallHeight - 2, posZ + offsetZ + outerWallOffset + outerFloorSizeZ))
+        }
+    }
 }
