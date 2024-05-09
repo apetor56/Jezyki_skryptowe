@@ -51,7 +51,7 @@ player.onChat("run", function () {
     offsetZ = 10
     outerFloorSizeX = 15
     outerFloorSizeZ = 22
-    wallHeight = 10
+    wallHeight = 16
     outerWallOffset = 4
     player.say(player.position())
     player.teleport(world(posX, posY, posZ))
@@ -60,6 +60,7 @@ player.onChat("run", function () {
     makeWallGround(1, 2)
     makeWallGround(2, 2)
     makeInnerWalls(3, 1)
+    makeWindows(2, 3)
     makeHut(6)
     makeOuterFloor()
     makeInnerFloor(2)
@@ -97,7 +98,7 @@ function makeHut (offsetXZ: number) {
     blocks.fill(
     BEDROCK,
     world(posX - outerFloorSizeX + offsetXZ, posY - 1, offsetZ + offsetXZ),
-    world(posX + outerFloorSizeX - offsetXZ, posY + 5, offsetZ + outerFloorSizeZ - offsetXZ),
+    world(posX + outerFloorSizeX - offsetXZ, posY + wallHeight * 0.6, offsetZ + outerFloorSizeZ - offsetXZ),
     FillOperation.Hollow
     )
 }
@@ -122,4 +123,18 @@ function makeWallHoles () {
             blocks.place(AIR, world(posX + outerFloorSizeX + outerWallOffset - indeks22, posY + wallHeight - 2, posZ + offsetZ + outerWallOffset + outerFloorSizeZ))
         }
     }
+}
+function makeWindows (windowWidth: number, windowHeight: number) {
+    blocks.fill(
+    AIR,
+    world(posX + outerFloorSizeX / 2, posY + wallHeight * 0.7, 0),
+    world(posX + outerFloorSizeX / 2 + windowWidth, posY + wallHeight * 0.7 - windowHeight, outerFloorSizeZ * 2),
+    FillOperation.Replace
+    )
+    blocks.fill(
+    AIR,
+    world(posX - outerFloorSizeX / 2, posY + wallHeight * 0.7, 0),
+    world(posX - outerFloorSizeX / 2 - windowWidth, posY + wallHeight * 0.7 - windowHeight, outerFloorSizeZ * 2),
+    FillOperation.Replace
+    )
 }
