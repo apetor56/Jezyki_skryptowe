@@ -1,11 +1,3 @@
-let posX = 0
-let outerFloorSizeX = 0
-let outerWallOffset = 0
-let posY = 0
-let offsetZ = 0
-let wallHeight = 0
-let outerFloorSizeZ = 0
-let posZ = 0
 function makeWallGround (offsetXZ: number, hightOffset: number) {
     blocks.fill(
     DIORITE,
@@ -25,14 +17,37 @@ function clearWorld () {
         blocks.fill(
         AIR,
         world(50, posY + indeks, 1),
-        world(-50, posY + indeks, 50),
+        world(-50, posY + indeks, 80),
         FillOperation.Replace
         )
     }
+    for (let indeks2 = 1; indeks2 <= 5; indeks2++) {
+        blocks.fill(
+        GRASS,
+        world(posX - 50, posY - indeks2, posZ - 10),
+        world(posX + 50, posY - indeks2, posZ + 90),
+        FillOperation.Replace
+        )
+    }
+}
+function makeBrigde () {
+    brigdeWidth = 3
     blocks.fill(
-    GRASS,
-    world(posX - 40, posY - 1, posZ + 1),
-    world(posX + 40, posY - 1, posZ + 50),
+    PLANKS_SPRUCE,
+    world(posX + brigdeWidth, posY - 1, offsetZ - outerWallOffset - fossOffset - 1),
+    world(posX - brigdeWidth, posY - 1, offsetZ - outerWallOffset + edgeOffset),
+    FillOperation.Replace
+    )
+    blocks.fill(
+    PLANKS_DARK_OAK,
+    world(posX + brigdeWidth, posY - 1, offsetZ - outerWallOffset - fossOffset - 1),
+    world(posX + brigdeWidth, posY, offsetZ - outerWallOffset + edgeOffset),
+    FillOperation.Replace
+    )
+    blocks.fill(
+    PLANKS_DARK_OAK,
+    world(posX - brigdeWidth, posY - 1, offsetZ - outerWallOffset - fossOffset - 1),
+    world(posX - brigdeWidth, posY, offsetZ - outerWallOffset + edgeOffset),
     FillOperation.Replace
     )
 }
@@ -44,18 +59,47 @@ function makeOuterFloor () {
     FillOperation.Replace
     )
 }
+function makeFoss () {
+    fossOffset = 9
+    edgeOffset = 3
+    blocks.replace(
+    AIR,
+    GRASS,
+    world(posX + outerFloorSizeX + outerWallOffset + fossOffset, posY - 1, posZ + offsetZ - outerWallOffset - fossOffset),
+    world(posX - outerFloorSizeX - outerWallOffset - fossOffset, posY - 4, posZ + offsetZ + outerFloorSizeZ + outerWallOffset + fossOffset)
+    )
+    blocks.replace(
+    WATER,
+    AIR,
+    world(posX + outerFloorSizeX + outerWallOffset + fossOffset, posY - 1, posZ + offsetZ - outerWallOffset - fossOffset),
+    world(posX - outerFloorSizeX - outerWallOffset - fossOffset, posY - 4, posZ + offsetZ + outerFloorSizeZ + outerWallOffset + fossOffset)
+    )
+    blocks.replace(
+    BEDROCK,
+    WATER,
+    world(posX + outerFloorSizeX + outerWallOffset + edgeOffset, posY - 1, posZ + offsetZ - outerWallOffset - edgeOffset),
+    world(posX - outerFloorSizeX - outerWallOffset - edgeOffset, posY - 4, posZ + offsetZ + outerFloorSizeZ + outerWallOffset + edgeOffset)
+    )
+    blocks.replace(
+    AIR,
+    WATER,
+    world(posX + outerFloorSizeX + outerWallOffset + fossOffset, posY - 1, posZ + offsetZ - outerWallOffset - fossOffset),
+    world(posX - outerFloorSizeX - outerWallOffset - fossOffset, posY - 1, posZ + offsetZ + outerFloorSizeZ + outerWallOffset + fossOffset)
+    )
+}
 player.onChat("run", function () {
     posX = 0
     posY = -60
     posZ = 0
-    offsetZ = 10
+    offsetZ = 18
     outerFloorSizeX = 15
-    outerFloorSizeZ = 22
+    outerFloorSizeZ = 35
     wallHeight = 16
     outerWallOffset = 4
     player.say(player.position())
     player.teleport(world(posX, posY, posZ))
     clearWorld()
+    makeFoss()
     makeOuterWalls()
     makeWallGround(1, 2)
     makeWallGround(2, 2)
@@ -65,6 +109,7 @@ player.onChat("run", function () {
     makeOuterFloor()
     makeInnerFloor(2)
     makeWallHoles()
+    makeBrigde()
 })
 function makeOuterWalls () {
     blocks.fill(
@@ -111,16 +156,16 @@ function makeInnerFloor (offsetXZ: number) {
     )
 }
 function makeWallHoles () {
-    for (let indeks2 = 0; indeks2 <= outerFloorSizeZ + 2 * outerWallOffset; indeks2++) {
-        if (indeks2 % 2 != 0) {
-            blocks.place(AIR, world(outerFloorSizeX + outerWallOffset + posX, posY + wallHeight - 2, posZ + offsetZ - outerWallOffset + indeks2))
-            blocks.place(AIR, world(posX - outerFloorSizeX - outerWallOffset, posY + wallHeight - 2, posZ + offsetZ - outerWallOffset + indeks2))
+    for (let indeks22 = 0; indeks22 <= outerFloorSizeZ + 2 * outerWallOffset; indeks22++) {
+        if (indeks22 % 2 != 0) {
+            blocks.place(AIR, world(outerFloorSizeX + outerWallOffset + posX, posY + wallHeight - 2, posZ + offsetZ - outerWallOffset + indeks22))
+            blocks.place(AIR, world(posX - outerFloorSizeX - outerWallOffset, posY + wallHeight - 2, posZ + offsetZ - outerWallOffset + indeks22))
         }
     }
-    for (let indeks22 = 0; indeks22 <= outerFloorSizeX * 2 + 2 * outerWallOffset; indeks22++) {
-        if (indeks22 % 2 != 0) {
-            blocks.place(AIR, world(posX + outerFloorSizeX + outerWallOffset - indeks22, posY + wallHeight - 2, posZ + offsetZ - outerWallOffset))
-            blocks.place(AIR, world(posX + outerFloorSizeX + outerWallOffset - indeks22, posY + wallHeight - 2, posZ + offsetZ + outerWallOffset + outerFloorSizeZ))
+    for (let indeks222 = 0; indeks222 <= outerFloorSizeX * 2 + 2 * outerWallOffset; indeks222++) {
+        if (indeks222 % 2 != 0) {
+            blocks.place(AIR, world(posX + outerFloorSizeX + outerWallOffset - indeks222, posY + wallHeight - 2, posZ + offsetZ - outerWallOffset))
+            blocks.place(AIR, world(posX + outerFloorSizeX + outerWallOffset - indeks222, posY + wallHeight - 2, posZ + offsetZ + outerWallOffset + outerFloorSizeZ))
         }
     }
 }
@@ -138,3 +183,14 @@ function makeWindows (windowWidth: number, windowHeight: number) {
     FillOperation.Replace
     )
 }
+let edgeOffset = 0
+let fossOffset = 0
+let brigdeWidth = 0
+let outerFloorSizeZ = 0
+let wallHeight = 0
+let offsetZ = 0
+let outerWallOffset = 0
+let outerFloorSizeX = 0
+let posX = 0
+let posY = 0
+let posZ = 0
