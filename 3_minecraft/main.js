@@ -115,6 +115,7 @@ player.onChat("run", function () {
     makeTower(-2 * outerFloorSizeX - 7, 0)
     makeTower(-2 * outerFloorSizeX - 7, outerFloorSizeZ + 6)
     makeTower(0, outerFloorSizeZ + 6)
+    makeLadder()
 })
 function makeOuterWalls () {
     blocks.fill(
@@ -182,10 +183,10 @@ function makeTower (offsetX: number, offsetZ2: number) {
     FillOperation.Replace
     )
     blocks.fill(
-        AIR,
-        world(offsetX + posX + outerFloorSizeX + outerWallOffset - 3, posY + towerHeight + 3, offsetZ2 + offsetZ - outerWallOffset - 1),
-        world(offsetX + posX + outerFloorSizeX + outerWallOffset + towerWidth - 3, posY + towerHeight + 3, offsetZ2 + offsetZ - 1),
-        FillOperation.Replace
+    AIR,
+    world(offsetX + posX + outerFloorSizeX + outerWallOffset - 3, posY + towerHeight + 3, offsetZ2 + offsetZ - outerWallOffset - 1),
+    world(offsetX + posX + outerFloorSizeX + outerWallOffset + towerWidth - 3, posY + towerHeight + 3, offsetZ2 + offsetZ - 1),
+    FillOperation.Replace
     )
 }
 function makeWallHoles () {
@@ -208,6 +209,14 @@ function makeGate () {
     AIR,
     world(posX + brigdeWidth - 1, posY, offsetZ - outerWallOffset),
     world(posX - brigdeWidth + 1, posY + gateHeight, offsetZ),
+    FillOperation.Replace
+    )
+}
+function makeLadder () {
+    blocks.fill(
+    LADDER,
+    world(posX - outerFloorSizeX + 3, posY, offsetZ),
+    world(posX - outerFloorSizeX + 3, posY + wallHeight - 3, offsetZ),
     FillOperation.Replace
     )
 }
@@ -236,6 +245,6 @@ let wallHeight = 0
 let offsetZ = 0
 let outerWallOffset = 0
 let outerFloorSizeX = 0
-let posZ = 0
-let posY = 0
 let posX = 0
+let posY = 0
+let posZ = 0
