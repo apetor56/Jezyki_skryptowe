@@ -16,8 +16,8 @@ function clearWorld () {
     for (let indeks = 0; indeks <= 50; indeks++) {
         blocks.fill(
         AIR,
-        world(50, posY + indeks, 1),
-        world(-50, posY + indeks, 80),
+        world(70, posY + indeks, 1),
+        world(-70, posY + indeks, 80),
         FillOperation.Replace
         )
     }
@@ -110,6 +110,11 @@ player.onChat("run", function () {
     makeInnerFloor(2)
     makeWallHoles()
     makeBrigde()
+    makeGate()
+    makeTower(0, 0)
+    makeTower(-2 * outerFloorSizeX - 7, 0)
+    makeTower(-2 * outerFloorSizeX - 7, outerFloorSizeZ + 6)
+    makeTower(0, outerFloorSizeZ + 6)
 })
 function makeOuterWalls () {
     blocks.fill(
@@ -155,6 +160,34 @@ function makeInnerFloor (offsetXZ: number) {
     FillOperation.Replace
     )
 }
+function makeTower (offsetX: number, offsetZ2: number) {
+    towerWidth = 5
+    towerHeight = wallHeight + 2
+    blocks.fill(
+    STONE_BRICKS,
+    world(offsetX + posX + outerFloorSizeX + outerWallOffset - 3, posY, offsetZ2 + offsetZ - outerWallOffset - 1),
+    world(offsetX + posX + outerFloorSizeX + outerWallOffset + towerWidth - 3, posY + towerHeight, offsetZ2 + offsetZ - 1),
+    FillOperation.Replace
+    )
+    blocks.fill(
+    STONE_BRICKS,
+    world(offsetX + posX + outerFloorSizeX + outerWallOffset - 4, posY + towerHeight + 1, offsetZ2 + offsetZ - outerWallOffset - 2),
+    world(offsetX + posX + outerFloorSizeX + outerWallOffset + towerWidth - 2, posY + towerHeight + 3, offsetZ2 + offsetZ),
+    FillOperation.Replace
+    )
+    blocks.fill(
+    PLANKS_DARK_OAK,
+    world(offsetX + posX + outerFloorSizeX + outerWallOffset - 3, posY + towerHeight + 2, offsetZ2 + offsetZ - outerWallOffset - 1),
+    world(offsetX + posX + outerFloorSizeX + outerWallOffset + towerWidth - 3, posY + towerHeight + 2, offsetZ2 + offsetZ - 1),
+    FillOperation.Replace
+    )
+    blocks.fill(
+        AIR,
+        world(offsetX + posX + outerFloorSizeX + outerWallOffset - 3, posY + towerHeight + 3, offsetZ2 + offsetZ - outerWallOffset - 1),
+        world(offsetX + posX + outerFloorSizeX + outerWallOffset + towerWidth - 3, posY + towerHeight + 3, offsetZ2 + offsetZ - 1),
+        FillOperation.Replace
+    )
+}
 function makeWallHoles () {
     for (let indeks22 = 0; indeks22 <= outerFloorSizeZ + 2 * outerWallOffset; indeks22++) {
         if (indeks22 % 2 != 0) {
@@ -168,6 +201,15 @@ function makeWallHoles () {
             blocks.place(AIR, world(posX + outerFloorSizeX + outerWallOffset - indeks222, posY + wallHeight - 2, posZ + offsetZ + outerWallOffset + outerFloorSizeZ))
         }
     }
+}
+function makeGate () {
+    gateHeight = 5
+    blocks.fill(
+    AIR,
+    world(posX + brigdeWidth - 1, posY, offsetZ - outerWallOffset),
+    world(posX - brigdeWidth + 1, posY + gateHeight, offsetZ),
+    FillOperation.Replace
+    )
 }
 function makeWindows (windowWidth: number, windowHeight: number) {
     blocks.fill(
@@ -183,6 +225,9 @@ function makeWindows (windowWidth: number, windowHeight: number) {
     FillOperation.Replace
     )
 }
+let gateHeight = 0
+let towerHeight = 0
+let towerWidth = 0
 let edgeOffset = 0
 let fossOffset = 0
 let brigdeWidth = 0
@@ -191,6 +236,6 @@ let wallHeight = 0
 let offsetZ = 0
 let outerWallOffset = 0
 let outerFloorSizeX = 0
-let posX = 0
-let posY = 0
 let posZ = 0
+let posY = 0
+let posX = 0
