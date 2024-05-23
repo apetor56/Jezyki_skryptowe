@@ -22,3 +22,17 @@ W ramach pierwszego zadania proszę wykonać grę kółko i krzyżyk w Bashu, kt
 ✅ 4.5 Posiada bramę oraz minimum 2 wieże - [commit](https://github.com/apetor56/jezyki_skryptowe/commit/52612f1a4200454bba13123a026b1a50f1e8890f)
 
 ✅ 5.0 Zamek ma minimum dwa poziomy (piętra) na które można wejść z zewnątrz - [commit](https://github.com/apetor56/jezyki_skryptowe/commit/4a1fc3873c62e90d1dfd233ab2e7e431d090b097)
+
+[**Tetris w Lua**](4_tetris/)
+
+Należy stworzyć grę Tetris w Lua na frameworku Löve (https://love2d.org/).
+
+✅ 3.0 Postawowa wersja dekstopowa z obsługą na klawiaturze - minimum 4 rodzaje klocków - [commit](https://github.com/apetor56/jezyki_skryptowe/commit/a57d0364d9205c0b6442a4d5cc552de3fe09d0d3)
+
+❌ 3.5 Zapis i odczyt gier
+
+❌ 4.0 Dodanie efektów dźwiękowych przy akcjach
+
+❌ 4.5 Dodanie animacji przy zbijaniu klocków
+
+❌ 5.0 Wersja na iOS lub Android z implementacją touch zamiast klawiatury
