@@ -87,6 +87,25 @@ class Flag
   end
 end
 
+class Coin
+  attr_accessor :x, :y, :width, :height, :image, :collected
+
+  def initialize(x, y)
+    @image = Image.new('coin.png', x: x, y: y, width: 25, height: 25, color: [1, 1, 1, 1.0])
+    @x = @image.x
+    @y = @image.y
+    @width = @image.width
+    @height = @image.height
+    @collected = false
+  end
+
+  def draw
+    @image.x = @x
+    @image.y = @y
+    @image.draw unless @collected
+  end
+end
+
 class FloorBlock
   attr_accessor :x, :y, :width, :height, :image
 
@@ -128,9 +147,16 @@ spikes = [
 
 flag = Flag.new(2575, 425)
 
+coins = [
+  Coin.new(600, 350), Coin.new(850, 300), Coin.new(1600, 350),
+  Coin.new(1850, 300), Coin.new(2150, 300), Coin.new(2450, 350)
+]
+
 key_states = { left: false, right: false, space: false }
 game_over = false
 game_won = false
+score = 0
+score_text = Text.new("Score: #{score}", x: 10, y: 10, size: 30, color: "yellow", font: "dpcomic.ttf")
 
 def move_objects_left(objects)
   objects.each { |obj| obj.x -= 5 }
@@ -150,17 +176,36 @@ update do
     floor_blocks.each(&:draw)
     spikes.each(&:draw)
     flag.draw
+    coins.each(&:draw)
+
+    coins.each do |coin|
+      unless coin.collected
+        coin.draw
+        if player.x + player.width > coin.x &&
+           player.x < coin.x + coin.width &&
+           player.y + player.height > coin.y &&
+           player.y < coin.y + coin.height
+          coin.x = -1000
+          coin.y = -1000
+          coin.collected = true
+          score += 10
+          score_text.text = "Score: #{score}"
+        end
+      end
+    end
 
     if key_states[:left]
       player.direction = -1
       move_objects_right(floor_blocks)
       move_objects_right(spikes)
       move_objects_right([flag])
+      move_objects_right(coins)
     elsif key_states[:right]
       player.direction = 1
       move_objects_left(floor_blocks)
       move_objects_left(spikes)
       move_objects_left([flag])
+      move_objects_left(coins)
     end
 
     player.on_ground = false
@@ -184,7 +229,7 @@ update do
          player.y < spike.y + spike.height
 
         game_over = true
-        Text.new("Game Over", x: 300, y: 250, size: 50, color: 'red')
+        Text.new("Game Over", x: 300, y: 250, size: 70, color: 'red', font: "dpcomic.ttf")
       end
     end
 
@@ -194,12 +239,13 @@ update do
        player.y < flag.y + flag.height
 
       game_won = true
-      Text.new("You Win!", x: 300, y: 250, size: 50, color: 'green')
+      Text.new("You Win!", x: 295, y: 200, size: 80, color: 'green', font: "dpcomic.ttf")
+      Text.new("Score: #{score}", x: 330, y: 260, size: 50, color: 'yellow', font: "dpcomic.ttf")
     end
 
     if player.y > 600
       game_over = true
-      Text.new("Game Over", x: 300, y: 250, size: 50, color: 'red')
+      Text.new("Game Over", x: 300, y: 250, size: 70, color: 'red', font: "dpcomic.ttf")
     end
   end
 end
@@ -226,6 +272,13 @@ on :key_up do |event|
     key_states[:right] = false
   when 'space'
     key_states[:space] = false
+  end
+end
+
+on :key_down do |event|
+  if event.key == 'r' && ( game_over == true || game_won == true )
+    close
+    system('ruby mario.rb')
   end
 end
 
