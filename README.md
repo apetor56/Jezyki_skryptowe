@@ -36,3 +36,15 @@ Należy stworzyć grę Tetris w Lua na frameworku Löve (https://love2d.org/).
 ❌ 4.5 Dodanie animacji przy zbijaniu klocków
 
 ❌ 5.0 Wersja na iOS lub Android z implementacją touch zamiast klawiatury
+
+[**Mario w Ruby2d**](5_mario/)
+
+✅ 3.0 Należy stworzyć jeden poziom z przeszkodami oraz dziurami w które można wpaść i zginąć - [commit](https://github.com/apetor56/jezyki_skryptowe/commit/cc3640395f299fbec251809ae4a7b5555f376d05)
+
+✅ 3.5 Należy dodać opcję zbierania punktów - [commit](https://github.com/apetor56/jezyki_skryptowe/commit/13172ce40894a2efe9236c9cfa8c9c031feeed30)
+
+❌ 4.0 Należy dodać przeciwników, których można zabić oraz 3 życia
+
+❌ 4.5 Ładowanie poziomów z pliku
+
+❌ 5.0 Generator poziomów
