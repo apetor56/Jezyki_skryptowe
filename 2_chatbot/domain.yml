@@ -1,0 +1,57 @@
+version: "2.0"
+
+intents:
+  - greet
+  - goodbye
+  - ask_opening_hours
+  - list_menu
+  - place_order
+  - show_orders
+  - affirm
+  - deny
+  - modify_order
+
+entities:
+  - day
+  - item
+
+slots:
+  day:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: day
+  item:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: item
+  orders:
+    type: list
+    mappings:
+      - type: from_text
+
+responses:
+  utter_greet:
+    - text: "Hello! How can I help you today?"
+
+  utter_goodbye:
+    - text: "Goodbye! Have a great day!"
+
+  utter_confirm_order:
+    - text: "Your order for {item} has been placed."
+
+  utter_show_orders:
+    - text: "Your orders: {orders}"
+
+actions:
+  - action_check_opening_hours
+  - action_list_menu
+  - action_place_order
+  - action_confirm_order
+  - action_show_orders
+  - action_modify_order
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
