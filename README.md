@@ -11,6 +11,22 @@ W ramach pierwszego zadania proszę wykonać grę kółko i krzyżyk w Bashu, kt
 
 ✅ 5.0 - pozwala na grę z komputerem: [commit](https://github.com/apetor56/jezyki_skryptowe/commit/e44ccd7662060779088038e6db9ba7e336e84c96) + [syntax fix](https://github.com/apetor56/jezyki_skryptowe/commit/c14272280e1e2135d8ddbe92308379c590e9e48a)
 
+[**Python: Czatbot**](2_chatbot/)
+
+Jako kolejne zadanie należy stworzyć czatbota zgodnie z opisem w https://github.com/codete/oreilly-intelligent-bots/blob/master/Homework.ipynb. Punkt 5 jest obowiązkowy dla każdego projektu, a platforma jest do wybory: Messenger, Slack, Discord, Skype, Webex.
+
+Należy wykonać odpowiednio na ocenę poszczególne zadania (wyższa ocena wymaga wykonania wszystkich poprzednich):
+
+✅ 3.0 A chatbot with the trained ability to handle at least 3 ways to phrase those intents. - [commit](https://github.com/apetor56/jezyki_skryptowe/commit/0c85054bd3125bebee1c4b25a127f8761541162e)
+
+❌ 3.5 Information about opening hours and menu items should be fetched from the configuration file.
+
+❌ 4.0 Chatbot needs to process the order and confirm purchased meals, as well as additional requests.
+
+❌ 4.5 Chatbot needs to confirm when the meal will be available as a pick-up in the restaurant.
+
+❌ 5.0 Chatbot should ask and confirm the delivery address instead of pick-up option
+
 [**JS: Zamek w Minecraft**](3_minecraft/)
 
 ✅ 3.0 Prosty zamek wykorzystując minimum 5 różnych rodzajów bloków - [commit](https://github.com/apetor56/jezyki_skryptowe/commit/4b4ddf54127e2ec51e12e1762b807e190ba9de63)
