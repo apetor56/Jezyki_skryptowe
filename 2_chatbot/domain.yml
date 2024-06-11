@@ -9,7 +9,7 @@ intents:
   - show_orders
   - affirm
   - deny
-  - modify_order  # New intent for modifying orders
+  - modify_order
 
 entities:
   - day
@@ -50,7 +50,7 @@ actions:
   - action_place_order
   - action_confirm_order
   - action_show_orders
-  - action_modify_order  # Add the new action for modifying orders
+  - action_modify_order
 
 session_config:
   session_expiration_time: 60
